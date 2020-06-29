@@ -1,0 +1,70 @@
+<div class="list row">
+
+    <div class="col-md-6">
+        <div [formGroup]="form" class="submit-form">
+            <div *ngIf="currentClass">
+                <div class="form-group">
+                    <label for="code">Code</label>
+                    <input type="text" class="form-control" id="code" pattern="^\S+$" required [(ngModel)]="currentClass.code" formControlName="code" />
+                    <div *ngIf="f.code.touched && f.code.invalid" class="alert alert-danger">
+                        <div *ngIf="f.code.errors.required">code is required.</div>
+                        <div *ngIf="f.code.errors.minlength">code should be 3 character.</div>
+                        <div *ngIf="f.code.errors.cannotContainSpace">code can not contain space.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-control" id="name" required [(ngModel)]="currentClass.name" formControlName="name" />
+                    <div *ngIf="f.name.touched && f.name.invalid" class="alert alert-danger">
+                        <div *ngIf="f.name.errors.required">name is required.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="max_students">Max Students</label>
+                    <input type="number" class="form-control" id="max_students" required [(ngModel)]="currentClass.max_students" formControlName="max_students" />
+                    <div *ngIf="f.max_students.touched && f.max_students.invalid" class="alert alert-danger">
+                        <div *ngIf="f.max_students.errors.required">Maximum Students is required.</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" class="form-control" id="description" [(ngModel)]="currentClass.description" [ngModelOptions]="{standalone: true}" name=" description " />
+
+                </div>
+                <div class="form-group">
+                    <label><strong>Status:</strong></label> {{ currentClass.status == 0 ? "Opened" : "Closed" }}
+                </div>
+            </div>
+            <button class="badge badge-primary mr-2" *ngIf="currentClass.status" (click)="updateStatus(false)">
+                Open
+              </button>
+            <button *ngIf="!currentClass.status" class="badge badge-primary mr-2" (click)="updateStatus(true)">
+                Close
+              </button>
+
+            <button class="badge badge-danger mr-2" (click)="deleteClasses()">
+                Delete
+              </button>
+
+            <button type="submit" class="badge badge-success" (click)="updateClasses()">
+                Update
+              </button>
+            <p>{{ message }}</p>
+
+
+            <div *ngIf="!currentClass">
+                <br />
+                <p>Cannot access this Classes...</p>
+            </div>
+        </div>
+    </div>
+    <!-- //// -->
+    <div class="col-md-6">
+        <h4>Students List</h4>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let std of studentsList">
+                {{ std.first_name }} {{ std.last_name }}
+            </li>
+        </ul>
+    </div>
+</div>
